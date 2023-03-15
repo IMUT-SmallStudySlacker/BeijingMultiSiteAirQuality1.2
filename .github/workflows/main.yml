@@ -35,24 +35,24 @@ jobs:
           
           
           
-      - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2.13.0
-        with:
-          name: beijing-data
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: main.yml
-          workflow_conclusion: completed,success
-          repo: IMUT-SmallStudySlacker/BeijingMultiSiteAirQuality1.1
-          path: ./data
-        env:
-          pythonLocation: /opt/hostedtoolcache/Python/3.9.16/x64
-          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.16/x64/lib
+#       - name: Download artifact
+#         uses: dawidd6/action-download-artifact@v2.13.0
+#         with:
+#           name: beijing-data
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           workflow: main.yml
+#           workflow_conclusion: completed,success
+#           repo: IMUT-SmallStudySlacker/BeijingMultiSiteAirQuality1.1
+#           path: ./data
+#         env:
+#           pythonLocation: /opt/hostedtoolcache/Python/3.9.16/x64
+#           LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.16/x64/lib
           
           
-      - name: List files in data directory
-        run: ls data
+#       - name: List files in data directory
+#         run: ls data
         
-        #test
+#         #test
 
 
         
