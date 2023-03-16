@@ -26,11 +26,18 @@ jobs:
           
       - name: Run script
         run: python Beijing_Data.py
-        
-        continue-on-error: true
-      - name: Check if script failed
-        if: ${{ job.status != 'success' }}
-        run: python Beijing_Data.py
+        id: my_step
+
+
+      - name: Rerun script on failure
+        if: ${{ steps.my_step.outcome != 'success' }}
+        run: |
+          count=0
+          while [ $count -lt 2 ]; do
+            echo "Retry: $count"
+            python Beijing_Data.py&& break
+            count=$((count+1))
+          done
         
 #         working-directory: .  # 设置工作目录为根目录
 
@@ -39,7 +46,7 @@ jobs:
         with:
           name: beijing-data
           path: ./data/气象数据*.csv
-          
+    
           
           
 #       - name: Download artifact
