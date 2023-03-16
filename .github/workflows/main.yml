@@ -22,7 +22,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          
+          
       - name: Run script
+        run: python Beijing_Data.py
+        
+        continue-on-error: true
+      - name: Check if script failed
+        if: ${{ job.status != 'success' }}
         run: python Beijing_Data.py
         
 #         working-directory: .  # 设置工作目录为根目录
