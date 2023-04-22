@@ -5,7 +5,7 @@ from datetime import datetime
 from lxml import etree
 
 headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'}
 url1 = "http://www.tianqihoubao.com/aqi/beijing.html"
 
 
@@ -109,12 +109,19 @@ def main():
         df['month'] = month_list
         df['day'] = day_list
         df['hour'] = hour_list
-        df.columns = ['station', 'PM10', 'PM2.5', 'CO', 'NO2', 'SO2', 'O3', 'TEMP', 'PRES', 'RAIN', 'wd', 'WSPM', 'year',
+        df.columns = ['station', 'PM10', 'PM2.5', 'CO', 'NO2', 'SO2', 'O3', 'TEMP', 'PRES', 'RAIN', 'wd', 'WSPM',
+                      'year',
                       'month', 'day', 'hour']
         df = df[['year', 'month', 'day', 'hour', 'PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'TEMP', 'PRES',
                  'RAIN', 'wd', 'WSPM', 'station']]
+        df['RAIN'] = df['RAIN'].apply(lambda x: float(x))
         df['PRES'] = df['PRES'].apply(lambda x: float(x) * 10)
         df['CO'] = df['CO'].apply(lambda x: float(x) * 1000)
+        df = df.drop(columns=['hour'], axis=1)
+        df['datetime'] = pd.to_datetime(df[['year', 'month', 'day']].astype(str).apply('-'.join, axis=1))
+        df = df.drop(columns=['year', 'month', 'day'], axis=1)
+        df.replace(['海淀万柳', '怀柔镇', '昌平镇', '顺义新城'], ['万柳', '怀柔', '昌平', '顺义'], inplace=True)
+        df.replace(['东风', '北风', '东北风', '西北风', '南风', '东南风', '西南风', '西风'], ['E', 'N', 'NE', 'NW', 'S', 'SE', 'SW', 'W'], inplace=True)
         title = './data/气象数据' + str(month) + '月' + str(day) + '日' + str(hour) + '时.csv'
         df.to_csv(title, index=False, encoding='utf_8_sig')
 
